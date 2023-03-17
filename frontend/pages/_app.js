@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }) {
     <Auth0Provider
       domain={"sandrino-dev.auth0.com"}
       clientId={"9f6ClmBt37ZGCXNqToPbefKmzVBSOLa2"}
-      //redirectUri={"http://localhost:8080/kbe/getdata"}
+      redirectUri={"http://localhost:8080/kbe/getdata"}
     >
       <Component {...pageProps} />
     </Auth0Provider>
