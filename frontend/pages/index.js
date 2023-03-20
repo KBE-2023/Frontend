@@ -9,20 +9,44 @@ export default function Home({ products }) {
       <Navbar />
       <Main />
       <div className=" max-w-7xl mx-auto">
-        <Products products={products} />
+        {
+          products?
+          <Products products={products} />: <h2>lsakdfjl</h2>
+        }
       </div>
       <Footer />
     </div>
   );
 }
-export async function getServerSideProps(context) {
-  const products = await fetch("http://localhost:8080/kbe/getdata").then(
-    (res) => res.json()
+/* export function getServerSideProps(context) {
+  const dummyProds = [{"id":1,"product":233.3,"description":"a","image":"https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg","name":"Mens Casual Slim Fit","price":15.99}]
+  const products =  fetch("http://localhost:8087/product/get/1").then(
+    (res) => {
+          res.json().then(
+            p => {
+              dummyProds.push(p)
+            }
+          )
+          
+     }
   );
 
   return {
     props: {
-      products,
+      dummyProds,
     },
   };
+} */
+
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await  fetch("http://localhost:8091/products/")
+  console.log("aksdfhlkaskjdf")
+  const p = await res.json()
+ 
+  let products =p
+
+
+  // Pass data to the page via props
+  return { props: { products } }
 }
