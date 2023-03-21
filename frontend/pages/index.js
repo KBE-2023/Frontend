@@ -11,7 +11,7 @@ export default function Home({ products }) {
       <div className=" max-w-7xl mx-auto">
         {
           products?
-          <Products products={products} />: <h2>lsakdfjl</h2>
+          <Products products={products} />: <h2>The store is empty for now, please come back later</h2>
         }
       </div>
       <Footer />
