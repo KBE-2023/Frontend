@@ -1,11 +1,12 @@
 import Image from "next/image";
 
 function Product({ id, product, description, image, name, price }) {
-  const addToBasket= async() => {
+
+  async function addToBasket() {
     let custId = 90
     const basket = await fetch(`http://localhost:8090/baskets/${custId}`)
 
-    if(basket.status === 404){
+    if(basket.status === 404){ // if there is no basket
       console.log("fetchhh123")
       const response = await fetch("http://localhost:8090/baskets/", {
         method: "POST",
@@ -22,12 +23,14 @@ function Product({ id, product, description, image, name, price }) {
       const data = await(response.json())
     }else{
       console.log("fetchhh")
+      const b = await basket.json()
+      let prods = b.products
       const response =  await fetch(`http://localhost:8090/baskets/${custId}`, {
         method: "PUT",
         body: JSON.stringify({
           "customerId": custId,
-          "products": ""+id,
-          "totalPrice": price,
+          "products": prods+","+id,
+          "totalPrice": b.totalPrice + price,
         }),
         headers:{
           "Content-Type": "application/json"
@@ -47,7 +50,9 @@ function Product({ id, product, description, image, name, price }) {
       {/* <p className="py-2 pb-0 line-clamp-2">{description}</p> */}
       <p className="pb-2 text-center font-bold">${price}</p>
       <div className="flex justify-center">
-        <button className=" flex items-center bg-green-300 px-4 rounded-lg h-10 w-fit hover:bg-green-500 hover:border-2" onClick={addToBasket}>
+        <button className=" flex items-center bg-green-300 px-4 rounded-lg h-10 w-fit hover:bg-green-500 hover:border-2" onClick={() => {
+          addToBasket( id, product, description, image, name, price)
+        }}>
 
           Add to Basket
         </button>
