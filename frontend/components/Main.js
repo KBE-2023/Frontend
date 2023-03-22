@@ -19,7 +19,7 @@ function Main() {
         Discover a world of fashion, beauty, and lifestyle products at your fingertips.
       </p>
       <p className="text-2xl text-center mx-40 mb-2">
-      Our online shopping site offers a wide range of high-quality items, from clothing and accessories to home decor and gifts.
+      Our site offers a wide range of high-quality items, from clothing and accessories to home decor and gifts.
       </p>
       <p className="text-2xl text-center mx-40 mb-8">
       Shop with us from the comfort of your own home and enjoy the convenience of easy ordering and fast delivery.
