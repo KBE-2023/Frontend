@@ -11,8 +11,9 @@ function Navbar() {
   return (
     <div className="flex flex-col sticky top-0 max-w-7xl font-medium p-6 px-5 sm:flex-row justify-between justify-center mx-auto text-base" style={{ backgroundColor: "#e0f2e9" }}>
       <div className="flex mx-2 px-1 cursor-pointer" onClick={() => router.push('/')}>
-        <FaShoppingBag size={32} className="mr-2" />
-        <div>Online Shopping</div>
+         <FaShoppingBag size={32} className="mr-2" />
+        {/* <img src="/ebuy_logo.png" className="navbar-logo" style={{ maxHeight: '40px', maxWidth: '150px', objectFit: 'contain' }} /> */}
+        <div>eBuy</div>
       </div>
       <div className="flex flex-col justify-center self-center sm:flex-row">
         <div className="mx-2 cursor-pointer px-1 text-center">MEN</div>

@@ -1,5 +1,8 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
+import { FaShoppingBasket } from 'react-icons/fa';
+import { FaShoppingCart } from 'react-icons/fa';
+import { loadStripe } from "@stripe/stripe-js";
 
 export default function Basket({ basket, products }) {
   const handleRemoveFromBasket = async (el) => {
@@ -13,7 +16,7 @@ export default function Basket({ basket, products }) {
     <Navbar></Navbar>
     <main className=" flex flex-col max-w-7xl mx-auto sm:flex-row ">
       <div className='flex-grow m-6 shadow-lg'>
-        <div className=' flex shadow-lg py-1 my-5' style={{ fontWeight: 'bold' }}> Your Basket </div>
+        <div className=' flex shadow-lg py-1 my-5' style={{ fontWeight: 'bold' }}> Your eBuy Basket </div>
         <div className=' flex flex-col px-1 space-y-10'>
           {products.length > 0 ? (
             <div className='sm:flex justify-between mx-5 space-x-10'  >
@@ -44,28 +47,75 @@ export default function Basket({ basket, products }) {
             </div>
           ) : (
             <div style={{ textAlign: 'center', margin: '50px' }}>
-              <p style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Your basket is empty!</p>
-              {/* <img src="https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg" alt="empty basket" style={{ width: '200px', height: 'auto' }} /> */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <p style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>Your basket is empty!</p>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '200px', height: '200px', border: '1px solid gray' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FaShoppingBasket size={100} color="gray" />
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
       </div>
       {products.length > 0 &&
-        <div className='flex flex-col justify-center items-center flex-grow m-6 shadow-lg'> 
-          <div className='flex mb-2'>Total</div>
-          <div style={{ fontWeight: 'bold' }} className='flex mb-4'>{basket ? `€${basket.totalPrice.toFixed(2)}` : "-"}</div>
-          <div className='flex flex-col items-center justify-center'>
-            <button className ='flex-shrink-0 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'>
-              Proceed to Checkout
-            </button>
-          </div>
-        </div>
+      <div className='flex flex-col justify-center items-center flex-grow m-6 shadow-lg'>
+      <div className='flex items-center mb-4'>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '200px', height: '200px', border: '1px solid gray' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FaShoppingCart size={100} color="gray" />
+      </div>
+      </div>
+      </div>
+      <div style={{ fontWeight: 'bold' }} className='flex mb-4'>{basket ? `Total:  €${basket.totalPrice.toFixed(2)}` : "-"}</div>
+      <div className='flex flex-col items-center justify-center'>
+        <button className='flex-shrink-0 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+        onClick={(() => {
+          checkout({
+            lineItems: [
+              {
+                price: "price_1MokGTEGQAH8U68Zi3HQPhLx",
+                quantity: 1
+              }
+            ]
+          })
+        })}
+        >
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+      
       }
     </main>
   </div>
   
   )
 }
+
+
+async function checkout({lineItems}){
+	let stripePromise = null
+
+	const getStripe = () => {
+		if(!stripePromise) {
+			stripePromise = loadStripe("pk_test_51Moj54EGQAH8U68ZqXCoVBd5JeEs9pTz9j0yzK0MBqEjwG2BxIv1UNMas5jTKpWq4Leu3rn0PxVJBZDVl3lGZ6Ec00CPzq18Pg")
+		}
+		return stripePromise
+	}
+
+	const stripe = await getStripe()
+
+	await stripe.redirectToCheckout({
+		mode: 'payment',
+		lineItems,
+		successUrl: `${window.location.origin}?session_id={CHECKOUT_SESSION_ID}`,
+		cancelUrl: window.location.origin
+	})
+
+}
+
 
 
  async function removeFromBasket(prod) {
