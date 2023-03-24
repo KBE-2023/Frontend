@@ -1,16 +1,19 @@
 import { useState } from "react";
 import Image from "next/image";
+import { API_GATEWAY_URL } from "../config";
+//const API_GATEWAY_URL = "http://localhost:8091";
+
 
 function Product({ id, product, description, image, name, price }) {
   const [notification, setNotification] = useState(null);
 
   async function addToBasket() {
     let custId = 90;
-    const basket = await fetch(`http://localhost:8090/baskets/${custId}`);
+    const basket = await fetch(`${API_GATEWAY_URL}/baskets/${custId}`);
 
     if (basket.status === 404) {
       console.log("fetchhh123");
-      const response = await fetch("http://localhost:8090/baskets/", {
+      const response = await fetch(`${API_GATEWAY_URL}/baskets/`, {
         method: "POST",
         body: JSON.stringify({
           customerId: custId,
@@ -29,7 +32,7 @@ function Product({ id, product, description, image, name, price }) {
       const b = await basket.json();
       let prods = b.products;
       const response = await fetch(
-        `http://localhost:8090/baskets/${custId}`,
+        `${API_GATEWAY_URL}/baskets/${custId}`,
         {
           method: "PUT",
           body: JSON.stringify({

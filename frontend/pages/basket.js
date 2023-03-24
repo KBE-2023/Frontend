@@ -3,6 +3,9 @@ import Navbar from '../components/Navbar'
 import { FaShoppingBasket } from 'react-icons/fa';
 import { FaShoppingCart } from 'react-icons/fa';
 import { loadStripe } from "@stripe/stripe-js";
+import { API_GATEWAY_URL } from '../config';
+//const API_GATEWAY_URL = "http://localhost:8091";
+
 
 export default function Basket({ basket, products }) {
   const handleRemoveFromBasket = async (el) => {
@@ -122,7 +125,7 @@ async function checkout({lineItems}){
  
   let custId = 90
   let products = []
-  const res = await  fetch("http://localhost:8090/baskets/")
+  const res = await  fetch(`${API_GATEWAY_URL}/baskets/`)
   console.log("res")
   console.log(res)
   const b = await res.json()
@@ -158,7 +161,7 @@ async function checkout({lineItems}){
     console.log(basket.customerId)
 
 
-    const response = await fetch(`http://localhost:8090/baskets/${basket.customerId}`, {
+    const response = await fetch(`${API_GATEWAY_URL}/baskets/${basket.customerId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -172,7 +175,7 @@ export async function getServerSideProps() {
   // Fetch data from external API
   let custId = 90
   let products = []
-  const res = await  fetch("http://localhost:8090/baskets/")
+  const res = await  fetch(`${API_GATEWAY_URL}/baskets/`)
   
   let basket = {}
   if(res.status !==404){
@@ -185,7 +188,7 @@ export async function getServerSideProps() {
       basket = (baskett[0])
       //console.log(basket)
       let prodNrs = basket?.products.split(',').map(el => parseInt(el))
-      const prodDetails = await fetch("http://localhost:8087/products/")
+      const prodDetails = await fetch(`${API_GATEWAY_URL}/products/`)
       const allProds = await prodDetails.json()
       products = allProds.filter(el => prodNrs.includes(el.id))
     }

@@ -23,7 +23,7 @@ export default function Home({ products }) {
 
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await  fetch("http://localhost:8087/products/")
+  const res = await  fetch("http://localhost:8091/products/")
   const p = await res.json()
  
   let products =p
