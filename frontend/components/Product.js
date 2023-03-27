@@ -13,7 +13,20 @@ function Product({ id, product, description, image, name, price }) {
 
     if (basket.status === 404) {
       console.log("fetchhh123");
-      const response = await fetch(`${API_GATEWAY_URL}/baskets/`, {
+    /*   const response = await fetch(`${API_GATEWAY_URL}/baskets/`, {
+        method: "POST",
+        body: JSON.stringify({
+          customerId: custId,
+          totalPrice: price,
+          products: "" + id,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }); */
+
+      const response = await fetch("http://localhost:8087/products/publish", 
+      {
         method: "POST",
         body: JSON.stringify({
           customerId: custId,
@@ -31,10 +44,24 @@ function Product({ id, product, description, image, name, price }) {
       console.log("fetchhh");
       const b = await basket.json();
       let prods = b.products;
-      const response = await fetch(
+      /* const response = await fetch(
         `${API_GATEWAY_URL}/baskets/${custId}`,
         {
           method: "PUT",
+          body: JSON.stringify({
+            customerId: custId,
+            products: prods + "," + id,
+            totalPrice: b.totalPrice + price,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ); */
+        const response = await fetch(
+        `http://localhost:8087/products/publish`,
+        {
+          method: "POST",
           body: JSON.stringify({
             customerId: custId,
             products: prods + "," + id,
