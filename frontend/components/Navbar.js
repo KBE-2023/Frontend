@@ -27,7 +27,7 @@ function Navbar() {
           onClick={() => router.push('/basket')}
           className="flex mx-2 px-1 px-1 text-center"
         >
-          <button > Basket </button>
+          {isAuthenticated ? <button> Basket </button>: <button type="button" disabled>Login in view Basket</button>}
         </div>
         <div className="mx-2 cursor-pointer">
           {isAuthenticated ? <LogoutButton /> : <LoginButton />}
